@@ -3,7 +3,10 @@
 <?php
 if ( have_posts() ) {
     while ( have_posts() ) {
-        the_post();  
+        the_post(); 
+        $tags = get_the_Tags(); 
+        $url = wp_get_attachment_url( get_post_thumbnail_id($post->ID), 'thumbnail');
+
 ?>
 <main>
     <section class="blogs-main-banner"
@@ -11,12 +14,12 @@ if ( have_posts() ) {
         <div class="container">
             <div class="main-banner-title">
             <h1><?php the_title(); ?></h1>
-                <?php $tags = get_the_terms($post->ID, 'post_tag'); ?>
-                <?php foreach ($tags as $tag): ?>
-                    <div class="tag"><?php echo esc_html($tag->name); ?></div>
-                <?php endforeach; ?>
+            
+                <?php foreach ($tags as $tag){ ?>
+					<div class="tag"><?php echo esc_html($tag->slug); ?></div>
+				<?php } ?>
             </div><!-- end of title -->
-            <?php $url = wp_get_attachment_url( get_post_thumbnail_id($post->ID), 'thumbnail'); ?>
+            
             <div class="main img" style="background-image:url(<?php echo $url; ?>);"></div>
         </div><!-- end of container -->
     </section>
@@ -25,22 +28,14 @@ if ( have_posts() ) {
         <div class="container">
             <div class="article-content">
                 <div class="author">
-                    <?php
-                        $author_id = get_the_author_meta('ID');
-                        $job_title = get_field('author_job_title', 'user_' . $author_id);
-                        $profile_image = get_field('author_img', 'user_' . $author_id);
-                        $instagram_link = get_field('author_instagram_link', 'user_' . $author_id);
-                        $linkedin_link = get_field('author_linkedin_link', 'user_' . $author_id);
-                    ?>
                     <div class="author-info">
                        <span>Author</span>
                         <div class="wrapper">
-                            <?php if ($profile_image): ?>
-                                <div class="author-img img" style="background-image:url(<?php echo esc_url($profile_image); ?>);"></div>
-                            <?php endif; ?> 
+                            <!-- Change img to an acf field to acquire url -->
+                            <div class="author-img img" style="background-image:url(<?php echo esc_url($author_image_url); ?>);"></div>
                             <div class="author-name">
                                 <h4><?php echo esc_html(get_the_author()); ?></h4>
-                                <p><?php echo esc_html($job_title); ?></p>
+                                <p><?php echo esc_html(get_the_author_meta('author_job_title')); ?></p>
                             </div>
                         </div> 
                         <p><?php echo esc_html(get_the_author_meta('description')); ?></p>
@@ -66,12 +61,12 @@ if ( have_posts() ) {
                     <div class="socials">
                         <ul>
                             <li><a 
-                                href="<?php echo esc_url($instagram_link); ?>" 
+                                href="<?php echo esc_url(get_the_author_meta('author_instagram_link')); ?>" 
                                 target="_blank">
                                 <i class="fa-brands fa-facebook"></i>Instagram</a>
                             </li>
                             <li><a 
-                                href="<?php echo esc_url($linkedin_link); ?>" 
+                                href="<?php echo esc_url(get_the_author_meta('author_linkedin_link')); ?>" 
                                 target="_blank">
                                 <i class="fa-brands fa-linkedin-in"></i>LinkedIn</a>
                             </li>
