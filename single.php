@@ -16,8 +16,8 @@ if ( have_posts() ) {
             <h1><?php the_title(); ?></h1>
             
                 <?php foreach ($tags as $tag){ ?>
-					<div class="tag"><?php echo esc_html($tag->slug); ?></div>
-				<?php } ?>
+			<div class="tag"><?php echo esc_html($tag->slug); ?></div>
+		<?php } ?>
             </div><!-- end of title -->
             
             <div class="main img" style="background-image:url(<?php echo $url; ?>);"></div>
